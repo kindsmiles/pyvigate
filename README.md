@@ -11,10 +11,11 @@ Pyvigate can be installed using pip or directly from the source for the latest v
 `pip install pyvigate`
 
 ### Installing from source
-
+```
 git clone https://github.com/kindsmiles/pyvigate.git
 cd pyvigate
 pip install .
+```
 
 ## Components
 
