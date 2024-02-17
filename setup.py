@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyvigate',
-    version='0.0.1',
+    version='0.0.2',
     author='Abhijith Neil Abraham',
     author_email='abhijithneilabrahampk@gmail.com',
     description='A brief description of what your package does',
