@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
 
+
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setup(
     name='pyvigate',
     version='0.0.2',
@@ -8,7 +12,7 @@ setup(
     description='A brief description of what your package does',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/pyvigate/pyvigate',
+    url='https://github.com/kindsmiles/pyvigate',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
@@ -17,7 +21,7 @@ setup(
     ],
     python_requires='>=3.8',  # Minimum version requirement of Python
     install_requires=[
-
+        requirements
     ],
     entry_points={
 

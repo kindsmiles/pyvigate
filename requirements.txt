@@ -1,0 +1,4 @@
+playwright
+beautifulsoup4 
+python-dotenv
+llama_index
