@@ -35,15 +35,15 @@ await engine.start_browser()
 ```
 
 
-### LlamaIndexWrapper (with Azure OpenAI)
-LlamaIndexWrapper incorporates AI to dynamically detect web page elements,
+### QueryEngine (with Azure OpenAI)
+QueryEngine incorporates AI to dynamically detect web page elements,
 significantly improving the efficiency and reliability of automated interactions.
 It also can help the user navigate and also create their own applications, which involve curating data, creating RAG applications, product tour, functional testing, etc.
 
 ```
-from pyvigate.ai.llama_index_wrapper import LlamaIndexWrapper
+from pyvigate.ai.query_engine import QueryEngine
 
-llama_index_wrapper = LlamaIndexWrapper(
+query_engine = QueryEngine(
     api_key=os.getenv("OPENAI_API_KEY"),
     api_version=os.getenv("AZURE_API_VERSION"),
     azure_endpoint=os.getenv("AZURE_ENDPOINT"),
@@ -54,12 +54,12 @@ llama_index_wrapper = LlamaIndexWrapper(
 
 ### Login
 
-Some products can be accessed by the browser only after the login. We can do this either manually identifying the login selectors or letting the AI detect the UI elements where the credentials can be passed.The Login component utilizes LlamaIndexWrapper to intelligently identify login forms and fields, streamlining the login process.
+Some products can be accessed by the browser only after the login. We can do this either manually identifying the login selectors or letting the AI detect the UI elements where the credentials can be passed.The Login component utilizes QueryEngine to intelligently identify login forms and fields, streamlining the login process.
 
 ```
 from pyvigate.core.login import Login
 
-login = Login(llama_index_wrapper)
+login = Login(query_engine)
 await login.perform_login(engine.page, "https://example.com/login", "username", "password")
 ```
 
@@ -100,7 +100,7 @@ from pyvigate.core.engine import PlaywrightEngine
 from pyvigate.core.login import Login
 from pyvigate.services.scraping import Scraping
 from pyvigate.services.caching import Caching
-from pyvigate.ai.llama_index_wrapper import LlamaIndexWrapper
+from pyvigate.ai.query_engine import QueryEngine
 import os
 
 load_dotenv()
@@ -109,8 +109,8 @@ async def login_and_scrape():
     engine = PlaywrightEngine(headless=True)
     await engine.start_browser()
 
-    llama_index_wrapper = LlamaIndexWrapper(api_key=os.getenv("OPENAI_API_KEY"))
-    login = Login(llama_index_wrapper)
+    query_engine = QueryEngine(api_key=os.getenv("OPENAI_API_KEY"))
+    login = Login(query_engine)
     await login.perform_login(engine.page, "https://example.com/login", os.getenv("USERNAME"), os.getenv("PASSWORD"))
 
     scraping = Scraping(data_dir="data")

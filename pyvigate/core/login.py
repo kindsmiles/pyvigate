@@ -9,11 +9,11 @@ import shutil
 
 
 class Login:
-    def __init__(self, llama_index_wrapper,
+    def __init__(self, query_engine=None,
                  credentials_file="demo_credentials.json",
                  cache_dir="html_cache"):
 
-        self.llama_index_wrapper = llama_index_wrapper
+        self.query_engine = query_engine
         self.credentials_file = credentials_file
         self.cache_dir = cache_dir
         self._setup_directories()
@@ -78,7 +78,7 @@ class Login:
         and extract login selectors."""
         cache_filename = self.cache_filename
         directory_path = os.path.dirname(cache_filename)
-        index = self.llama_index_wrapper.create_vector_store_index(directory_path)
+        index = self.query_engine.create_vector_store_index(directory_path)
         query_text = """Look at the given html and find the selectors
                                       corresponding the following fields.
                                       The selectors are required to pass
@@ -89,7 +89,7 @@ class Login:
                                       3) Log In/ Sign In button
                                     Respond only with a dict where the keys are the above three.
                                       """
-        response = self.llama_index_wrapper.query(index, query_text)
+        response = self.query_engine.query(index, query_text)
         login_selectors = ast.literal_eval(str(response))
         return login_selectors
 

@@ -1,3 +1,4 @@
+
 from llama_index import (
     ServiceContext,
     SimpleDirectoryReader,
@@ -8,7 +9,7 @@ from llama_index.embeddings import AzureOpenAIEmbedding
 from llama_index.llms import AzureOpenAI
 
 
-class LlamaIndexWrapper:
+class QueryEngine:
     def __init__(
         self,
         api_key,
