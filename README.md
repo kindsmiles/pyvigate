@@ -33,7 +33,7 @@ await engine.start_browser()
 ```
 
 
-### LlamaIndexWrapper
+### LlamaIndexWrapper (with Azure OpenAI)
 LlamaIndexWrapper incorporates AI to dynamically detect web page elements,
 significantly improving the efficiency and reliability of automated interactions.
 It also can help the user navigate and also create their own applications, which involve curating data, creating RAG applications, product tour, functional testing, etc.
@@ -42,8 +42,11 @@ It also can help the user navigate and also create their own applications, which
 from pyvigate.ai.llama_index_wrapper import LlamaIndexWrapper
 
 llama_index_wrapper = LlamaIndexWrapper(
-    api_key="your_api_key",
-    # Additional parameters
+    api_key=os.getenv("OPENAI_API_KEY"),
+    api_version=os.getenv("AZURE_API_VERSION"),
+    azure_endpoint=os.getenv("AZURE_ENDPOINT"),
+    llm_deployment_name=os.getenv("LLM_DEPLOYMENT_NAME"),
+    embedding_deployment_name=os.getenv("EMBEDDING_DEPLOYMENT_NAME")
 )
 ```
 
