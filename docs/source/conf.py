@@ -39,18 +39,3 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
 ]
-
-# Custom addition for running sphinx-apidoc automatically
-def run_apidoc(_):
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    module_dir = os.path.join(current_dir, "../../pyvigate")  # Adjust path to your module
-    output_path = os.path.join(current_dir, "docs/source")  # Adjust path to output .rst files
-    cmd_path = 'sphinx-apidoc'
-    if os.name == 'nt':
-        cmd_path += '.exe'
-    subprocess.check_call([cmd_path, '-f', '-e', '-o', output_path, module_dir, '--force'])
-
-def setup(app):
-    app.connect('builder-inited', run_apidoc)
-
-autodoc_mock_imports = ['pyvigate.services.ai']
