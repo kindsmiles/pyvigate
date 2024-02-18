@@ -5,7 +5,3 @@ sphinx:
 
 python:
   version: 3.8
-
-# Specify the build image, which determines the OS environment
-build:
-  image: "latest"
