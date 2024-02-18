@@ -8,7 +8,7 @@
 
 import os
 import sys
-
+sys.path.insert(0, os.path.abspath('../../'))
 
 project = 'pyvigate'
 copyright = '2024, Abhijith Neil Abraham'
@@ -31,9 +31,11 @@ language = 'en'
 html_theme = 'alabaster'
 html_static_path = ['_static']
 
-sys.path.insert(0, os.path.abspath('../../'))
+
 
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
 ]
+
+autodoc_mock_imports = ['pyvigate.services.ai']

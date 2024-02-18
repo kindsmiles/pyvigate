@@ -1,1 +1,1 @@
-from .scraping import Scraping
+from .scraping import Scrapingfrom .prompts import ScrapePrompts

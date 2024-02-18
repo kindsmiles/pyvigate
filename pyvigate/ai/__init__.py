@@ -1,2 +1,2 @@
-from .llama_index_wrapper import LlamaIndexWrapper
+from .query_engine import QueryEngine
 from .prompt_engineering import PromptEngineering
