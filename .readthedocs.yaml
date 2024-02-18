@@ -1,25 +1,11 @@
 version: 2
 
-# Python configuration
-python:
-  version: 3.8  # Match the minimum Python version from your setup.py
-
-# Build configuration
 sphinx:
-  configuration: docs/conf.py  # Path to your Sphinx configuration file
+  configuration: docs/conf.py
 
-# How Read the Docs will install your project
-build:
-  os: "ubuntu-20.04"
-  tools:
-    python: "3.8"
-  # Install your project and its dependencies
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs  # If you have extra requirements for your docs, list them under 'docs' in your setup.py
+python:
+  version: 3.8
 
-# Optionally specify the Python and Sphinx build tools versions
+# Specify the build image, which determines the OS environment
 build:
   image: "latest"
