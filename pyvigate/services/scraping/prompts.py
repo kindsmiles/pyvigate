@@ -1,4 +1,4 @@
-from ..ai.prompt_engineering import PromptEngineering
+from ...ai.prompt_engineering import PromptEngineering
 
 
 class ScrapePrompts(PromptEngineering):
@@ -18,6 +18,7 @@ class ScrapePrompts(PromptEngineering):
         template = "Validate the following extracted data: {data} against this webpage content: \n{content}"
         return self.generate_prompt(template, data=extracted_data, content=source_content)
 
-    def custom_prompt(self, custom_instructions):
+    def custom_prompt(self, webpage_content, custom_instructions):
         template = "{instructions}"
-        return self.generate_prompt(template, instructions=custom_instructions)
+        return self.generate_prompt(template, content=webpage_content,
+                                    instructions=custom_instructions)
