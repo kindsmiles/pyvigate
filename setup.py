@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
@@ -19,10 +18,14 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.8',  # Minimum version requirement of Python
-    install_requires=[
-        requirements
-    ],
+    python_requires='>=3.8',
+    install_requires=requirements,
+    extras_require={
+        'docs': [
+            'sphinx>=3.0',
+            'sphinx_rtd_theme'
+        ]
+    },
     entry_points={
 
     },
