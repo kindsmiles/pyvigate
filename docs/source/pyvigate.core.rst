@@ -4,21 +4,11 @@ pyvigate.core package
 Submodules
 ----------
 
-pyvigate.core.engine module
----------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyvigate.core.engine
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyvigate.core.login module
---------------------------
-
-.. automodule:: pyvigate.core.login
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyvigate.core.engine
+   pyvigate.core.login
 
 Module contents
 ---------------

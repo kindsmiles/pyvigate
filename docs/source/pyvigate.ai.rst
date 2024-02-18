@@ -4,21 +4,11 @@ pyvigate.ai package
 Submodules
 ----------
 
-pyvigate.ai.prompt\_engineering module
---------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyvigate.ai.prompt_engineering
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyvigate.ai.query\_engine module
---------------------------------
-
-.. automodule:: pyvigate.ai.query_engine
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyvigate.ai.prompt_engineering
+   pyvigate.ai.query_engine
 
 Module contents
 ---------------
