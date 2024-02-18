@@ -5,3 +5,9 @@ sphinx:
 
 python:
   version: 3.8
+
+build:
+    os:
+    - linux
+    - windows
+    - macos
