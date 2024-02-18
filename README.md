@@ -3,6 +3,7 @@ Pyvigate: A Python framework that combines headless browsing with LLMs that assi
 
 ![PyPI Downloads](https://img.shields.io/pypi/dm/pyvigate)
 
+[![Downloads](https://static.pepy.tech/badge/pyvigate)](https://pepy.tech/project/pyvigate)
 
 ## Installation
 
