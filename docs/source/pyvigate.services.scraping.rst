@@ -4,21 +4,11 @@ pyvigate.services.scraping package
 Submodules
 ----------
 
-pyvigate.services.scraping.prompts module
------------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyvigate.services.scraping.prompts
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pyvigate.services.scraping.scraping module
-------------------------------------------
-
-.. automodule:: pyvigate.services.scraping.scraping
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyvigate.services.scraping.prompts
+   pyvigate.services.scraping.scraping
 
 Module contents
 ---------------

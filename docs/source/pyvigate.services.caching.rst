@@ -4,13 +4,10 @@ pyvigate.services.caching package
 Submodules
 ----------
 
-pyvigate.services.caching.caching module
-----------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: pyvigate.services.caching.caching
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   pyvigate.services.caching.caching
 
 Module contents
 ---------------
