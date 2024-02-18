@@ -44,7 +44,7 @@ extensions = [
 def run_apidoc(_):
     current_dir = os.path.abspath(os.path.dirname(__file__))
     module_dir = os.path.join(current_dir, "../../pyvigate")  # Adjust path to your module
-    output_path = os.path.join(current_dir, "source")  # Adjust path to output .rst files
+    output_path = os.path.join(current_dir, "docs/source")  # Adjust path to output .rst files
     cmd_path = 'sphinx-apidoc'
     if os.name == 'nt':
         cmd_path += '.exe'
