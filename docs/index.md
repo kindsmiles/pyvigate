@@ -1,12 +1,19 @@
-# Welcome to My Project Documentation
+# Welcome to pyvigate documentation
+Pyvigate: A Python framework that combines headless browsing with LLMs that assists you in your data solutions, product tours, building RAG applications, web automation, functional testing, and many more!
 
-Welcome to the documentation for My Project. Here you will find information on how to use, install, and contribute to the project.
 
-## Quickstart
+## Installation
 
-// Quickstart information
+Pyvigate can be installed using pip or directly from the source for the latest version.
 
-## More Information
+### Using pip
 
-- [Getting Started](getting-started.md)
-- [Configuration](configuration.md)
+`pip install pyvigate`
+
+### Installing from source
+```
+git clone https://github.com/kindsmiles/pyvigate.git
+cd pyvigate
+pip install .
+```
+
