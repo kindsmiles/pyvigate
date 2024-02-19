@@ -1,0 +1,30 @@
+site_name: Pyvigate Documentation
+theme:
+  name: readthedocs
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        rendering:
+          show_source: true
+nav:
+- Home: index.md
+- AI:
+  - Prompt Engineering: ai/prompt_engineering.md
+  - Query Engine: ai/query_engine.md
+- Core:
+  - Engine: core/engine.md
+  - Login: core/login.md
+- Services:
+  - Caching: services/caching/caching.md
+  - Scraping:
+    - Prompts: services/scraping/prompts.md
+    - Scraping: services/scraping/scraping.md
+- Engine: core/engine.md
+- Login: core/login.md
+- Query engine: ai/query_engine.md
+- Prompt engineering: ai/prompt_engineering.md
+- Prompts: services/scraping/prompts.md
+- Scraping: services/scraping/scraping.md
+- Caching: services/caching/caching.md
