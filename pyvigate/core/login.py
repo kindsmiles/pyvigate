@@ -9,6 +9,15 @@ import shutil
 
 
 class Login:
+    """
+    Automates web application login using AI-powered selector detection.
+
+    Attributes:
+        query_engine: An instance of QueryEngine used for selector detection.
+        credentials_file (str): Path to a JSON file storing login credentials.
+        cache_dir (str): Directory path for caching webpage contents.
+    """
+
     def __init__(self, query_engine=None,
                  credentials_file="demo_credentials.json",
                  cache_dir="html_cache"):
@@ -25,7 +34,17 @@ class Login:
         os.makedirs(self.cache_dir)
 
     async def is_page_stable(self, page: Page, interval=0.1, checks=4):
-        """Check if the page content is stable over a few intervals."""
+        """
+        Verifies if the webpage content is stable over a series of intervals.
+
+        Args:
+            page (Page): The Playwright page instance to check.
+            interval (float): The delay between checks.
+            checks (int): The number of checks to determine stability.
+
+        Returns:
+            bool: True if stable, False otherwise.
+        """
         last_html_hash = ""
         stable_checks = 0
         while stable_checks < checks:
@@ -43,7 +62,18 @@ class Login:
                             page: Page, url: str,
                             username: str,
                             password: str):
-        """Performs login using detected selectors from LlamaIndexWrapper."""
+        """
+        Performs the login action on the specified webpage.
+
+        Args:
+            page (Page): The Playwright page instance
+            url (str): The URL of the login page.
+            username (str): The username for login.
+            password (str): The password for login.
+
+        Returns:
+            Page: The page instance after the login action.
+        """
         await page.goto(url)
         await self.is_page_stable(page)
         content = await page.content()
@@ -66,35 +96,60 @@ class Login:
         return page
 
     def cache_page_content(self, soup, current_url):
-        """Caches the current page content for AI analysis."""
-        cache_filename = f"{self.cache_dir}/{self.get_filename_from_url(current_url)}_cached.html"
+        """
+        Caches the HTML content of the current page for AI analysis.
+
+        Args:
+            soup (BeautifulSoup): BeautifulSoup instance
+            current_url (str): The current page URL.
+
+        Returns:
+            str: The filepath of the cached content.
+        """
+        cache_filename = f"{self.cache_dir}/{self._get_filename_from_url(current_url)}_cached.html"
         self.cache_filename = cache_filename
         with open(cache_filename, "w") as file:
             file.write(str(soup))
         return cache_filename
 
     async def get_selectors_from_ai(self, cache_filename):
-        """Uses the LlamaIndexWrapper to analyze cached page content
-        and extract login selectors."""
+        """
+        Uses AI to analyze cached page content and extract login selectors.
+
+        Args:
+            cache_filename (str): The filepath of the cached page content.
+
+        Returns:
+            dict: A dictionary of detected login selectors.
+        """
         cache_filename = self.cache_filename
         directory_path = os.path.dirname(cache_filename)
         index = self.query_engine.create_vector_store_index(directory_path)
         query_text = """Look at the given html and find the selectors
                                       corresponding the following fields.
                                       The selectors are required to pass
-                                  to the page variable of playwright so respond in
-                                  that format.
+                                  to the page variable of playwright so
+                                  respond in that format.
                                       1) Email Textarea
                                       2) Password Textarea
                                       3) Log In/ Sign In button
-                                    Respond only with a dict where the keys are the above three.
+                                    Respond only with a dict where the
+                                    keys are the above three.
                                       """
         response = self.query_engine.query(index, query_text)
         login_selectors = ast.literal_eval(str(response))
         return login_selectors
 
     def save_login_state(self, url, username, password, actual_url):
-        """Saves login state to a file."""
+        """
+        Saves the current login state to a credentials file.
+
+        Args:
+            url (str): The login page URL.
+            username (str): The username used for login.
+            password (str): The password used for login.
+            actual_url (str): The URL after successful login.
+        """
         credentials = {
             "url": url,
             "username": username,
@@ -104,7 +159,8 @@ class Login:
         with open(self.credentials_file, "w") as file:
             json.dump(credentials, file)
 
-    def get_filename_from_url(self, url):
-        """Generates a sanitized filename from a URL."""
-        # Implementation remains similar to the provided utility function
-        pass
+    def _get_filename_from_url(self, url):
+
+        filename = url.replace("http://",
+                               "").replace("https://", "").replace("/", "_")
+        return filename.strip("_")
