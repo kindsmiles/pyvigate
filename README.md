@@ -3,6 +3,7 @@ Pyvigate: A Python framework that combines headless browsing with LLMs that assi
 
 ![PyPI Downloads](https://img.shields.io/pypi/dm/pyvigate) [![Downloads](https://static.pepy.tech/badge/pyvigate)](https://pepy.tech/project/pyvigate) [![Documentation](https://img.shields.io/badge/docs-readthedocs-blue)](https://pyvigate.readthedocs.io/en/latest/)
 
+
 ## Installation
 
 Pyvigate can be installed using pip or directly from the source for the latest version.
@@ -124,3 +125,8 @@ async def login_and_scrape():
 if __name__ == "__main__":
     asyncio.run(login_and_scrape())
 ```
+
+## Donations
+We are looking to cover some of our API costs, so we accept any donations that you can make:
+
+[![Sponsor me on Buy Me a Coffee](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/abhijithneilabr)
