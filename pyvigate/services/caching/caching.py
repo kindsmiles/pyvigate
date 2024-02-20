@@ -7,7 +7,20 @@ from playwright.async_api import Page
 
 
 class Caching:
+    """
+    Manages caching of webpage content for offline access and analysis.
+
+    Attributes:
+        cache_dir (str): Directory to store cached pages.
+    """
+
     def __init__(self, cache_dir="html_cache"):
+        """
+        Initializes the caching system with a specified directory.
+
+        Args:
+            cache_dir (str): The directory for storing cache files.
+        """
         self.cache_dir = cache_dir
         self._setup_directories()
 
@@ -18,7 +31,16 @@ class Caching:
         os.makedirs(self.cache_dir)
 
     async def cache_page_content(self, page: Page, url: str):
-        """Caches the HTML content of a given URL."""
+        """
+        Saves the HTML content of a page to the cache directory.
+
+        Args:
+            page (Page): The page object from Playwright.
+            url (str): The URL of the page to cache.
+
+        Returns:
+            str: The file path of the cached content.
+        """
         await page.goto(url)
         content = await page.content()
         filename = self._get_filename_from_url(url) + "_cached.html"
@@ -37,7 +59,16 @@ class Caching:
         return filename.strip('_')
 
     async def cache_all_links(self, page: Page, base_url: str):
-        """Caches all unique links found on the given page."""
+        """
+        Caches content from all unique links on a given page.
+
+        Args:
+            page (Page): The page object from Playwright.
+            base_url (str): The base URL to match links against.
+
+        Returns:
+            None
+        """
         await page.goto(base_url)
         content = await page.content()
         soup = BeautifulSoup(content, "html.parser")
