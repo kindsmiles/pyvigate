@@ -11,7 +11,6 @@ plugins:
 nav:
 - Home: index.md
 - AI:
-  - Prompt Engineering: ai/prompt_engineering.md
   - Query Engine: ai/query_engine.md
 - Core:
   - Engine: core/engine.md
