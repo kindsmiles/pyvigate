@@ -2,57 +2,36 @@
 
 ## Class `QueryEngine`
 
-    A class that initializes and manages interactions with
-    a Large Language Model (LLM) and embedding services
-    for querying and indexing documents using the Azure OpenAI service.
-    
-    Attributes:
-        api_key (str): API key for Azure OpenAI services.
-        api_version (str): The API version of the Azure OpenAI service.
-        azure_endpoint (str): The endpoint URL for the Azure OpenAI service.
-        llm_deployment_name (str): The deployment name for the LLM service.
-        embedding_deployment_name (str): The deployment name for the embedding.
-        llm (AzureOpenAI): An instance of the AzureOpenAI class for LLM.
-        embed_model (AzureOpenAIEmbedding): AzureOpenAIEmbedding instance
-        service_context (ServiceContext): Config for LLM and Embedding models.
-    
-    Methods:
-        create_vector_store_index(directory_path): Creates a vector store index
-        from documents in a specified directory.
-        query(index, query_text): Queries an index with a given text
-        and returns the query results.
+    Manages interactions with different LLM and embedding services for
+    querying and indexing, supporting dynamic service initialization.
 
 ### Attributes:
 
 
 ### Methods:
 
-- **__init__**`(self, api_key, api_version, azure_endpoint, llm_deployment_name, embedding_deployment_name)`
+- **__init__**`(self, api_key, model_name, embedding_name, llm_type='azure', embedding_type='azure', endpoint=None, api_version=None)`
 
-No description provided.
+    Initializes QueryEngine with specific service configurations.
+    
+    Args:
+        api_key (str): API key for the LLM and embedding services.
+        model_name (str): Model name for the LLM service.
+        embedding_name (str): Model name for the embedding service.
+        llm_type (str): Type of LLM service ('azure' or 'together').
+        embedding_type (str): Type of embedding service ('azure' or 'together').
+        endpoint (str, optional): Endpoint URL for the service, for Azure.
+        api_version (str, optional): API version for the service, for Azure.
 
 - **create_vector_store_index**`(self, directory_path)`
 
-    Creates a vector store index from the documents
-    within the specified directory path.
-    
-    Parameters:
-        directory_path (str): The path to the directory containing
-        the documents to be indexed.
-    
-    Returns:
-        VectorStoreIndex: An instance of VectorStoreIndex
-        containing the indexed documents.
+    Creates a vector index from documents in a specified directory.
+
+- **initialize_services**`(self)`
+
+    Initializes the specified LLM and embedding services based on config.
 
 - **query**`(self, index, query_text)`
 
-    Queries the provided index with the specified query text
-    and returns the results.
-    
-    Parameters:
-        index (VectorStoreIndex): The index to query against.
-        query_text (str): The text to query the index with.
-    
-    Returns:
-        Any: The results of the query against the index.
+    Queries an index with text and returns the results.
 
