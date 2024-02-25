@@ -1,103 +1,70 @@
-
-from llama_index import (
-    ServiceContext,
-    SimpleDirectoryReader,
-    VectorStoreIndex,
-    set_global_service_context,
-)
-from llama_index.embeddings import AzureOpenAIEmbedding
-from llama_index.llms import AzureOpenAI
+from llama_index.core import (Settings,
+                              SimpleDirectoryReader,
+                              VectorStoreIndex
+                              )
 
 
 class QueryEngine:
     """
-    A class that initializes and manages interactions with
-    a Large Language Model (LLM) and embedding services
-    for querying and indexing documents using the Azure OpenAI service.
-
-    Attributes:
-        api_key (str): API key for Azure OpenAI services.
-        api_version (str): The API version of the Azure OpenAI service.
-        azure_endpoint (str): The endpoint URL for the Azure OpenAI service.
-        llm_deployment_name (str): The deployment name for the LLM service.
-        embedding_deployment_name (str): The deployment name for the embedding.
-        llm (AzureOpenAI): An instance of the AzureOpenAI class for LLM.
-        embed_model (AzureOpenAIEmbedding): AzureOpenAIEmbedding instance
-        service_context (ServiceContext): Config for LLM and Embedding models.
-
-    Methods:
-        create_vector_store_index(directory_path): Creates a vector store index
-        from documents in a specified directory.
-        query(index, query_text): Queries an index with a given text
-        and returns the query results.
+    Manages interactions with LLM and embedding services for querying and indexing.
+    This class supports different types of LLM services (e.g., Azure OpenAI and Together AI)
+    by dynamically initializing the required services based on the specified configuration.
     """
+    def __init__(self, api_key, model_name, embedding_name, llm_type='azure', embedding_type='azure',
+                 endpoint=None, api_version=None):
+        """
+        Initializes the QueryEngine with the specified configuration.
 
-    def __init__(
-        self,
-        api_key,
-        api_version,
-        azure_endpoint,
-        llm_deployment_name,
-        embedding_deployment_name,
-    ):
+        Args:
+            api_key (str): The API key for the services.
+            model_name (str): The model name for both the LLM and embedding services.
+            llm_type (str, optional): The type of LLM ('azure' or 'together'). Defaults to 'azure'.
+            embedding_type (str, optional): The type of embedding ('azure' or 'together'). Defaults to 'azure'.
+            endpoint (str, optional): The endpoint URL for the service. Required for Azure.
+            api_version (str, optional): The API version of the service. Required for Azure.
+        """
         self.api_key = api_key
+        self.model_name = model_name
+        self.embedding_name = embedding_name
+        self.llm_type = llm_type
+        self.embedding_type = embedding_type
+        self.endpoint = endpoint
         self.api_version = api_version
-        self.azure_endpoint = azure_endpoint
-        self.llm_deployment_name = llm_deployment_name
-        self.embedding_deployment_name = embedding_deployment_name
 
-        self.llm = AzureOpenAI(
-            model="gpt-35-turbo",
-            deployment_name=self.llm_deployment_name,
-            api_key=self.api_key,
-            azure_endpoint=self.azure_endpoint,
-            api_version=self.api_version,
-        )
+        self.initialize_services()
 
-        self.embed_model = AzureOpenAIEmbedding(
-            model="text-embedding-ada-002",
-            deployment_name=self.embedding_deployment_name,
-            api_key=self.api_key,
-            azure_endpoint=self.azure_endpoint,
-            api_version=self.api_version,
-        )
+    def initialize_services(self):
+        """Initializes the LLM and embedding models"""
 
-        self.service_context = ServiceContext.from_defaults(
-            llm=self.llm,
-            embed_model=self.embed_model,
-        )
+        if self.llm_type == 'azure':
+            from llama_index.llms.azure_openai import AzureOpenAI
+            self.llm = AzureOpenAI(model=self.model_name, api_key=self.api_key,
+                                   azure_endpoint=self.azure_endpoint,
+                                   api_version=self.api_version)
+        elif self.llm_type == 'together':
+            from llama_index.llms.together import TogetherLLM
+            self.llm = TogetherLLM(model=self.model_name, api_key=self.api_key)
 
-        set_global_service_context(self.service_context)
+        if self.embedding_type == 'azure':
+            from llama_index.embeddings.azure_openai import AzureOpenAIEmbedding
+            self.embed_model = AzureOpenAIEmbedding(model=self.embedding_name,
+                                                    api_key=self.api_key,
+                                                    azure_endpoint=self.azure_endpoint,
+                                                    api_version=self.api_version)
+        elif self.embedding_type == 'together':
+            from llama_index.embeddings.together import TogetherEmbedding
+            self.embed_model = TogetherEmbedding(model_name=self.embedding_name,
+                                                 api_key=self.api_key)
+
+        Settings.llm = self.llm
+        Settings.embed_model = self.embed_model
 
     def create_vector_store_index(self, directory_path):
-        """
-    Creates a vector store index from the documents
-    within the specified directory path.
-
-    Parameters:
-        directory_path (str): The path to the directory containing
-        the documents to be indexed.
-
-    Returns:
-        VectorStoreIndex: An instance of VectorStoreIndex
-        containing the indexed documents.
-    """
+        """Creates a vector store index from documents in the specified directory."""
         documents = SimpleDirectoryReader(directory_path).load_data()
-        return VectorStoreIndex.from_documents(
-            documents, service_context=self.service_context
-        )
+        return VectorStoreIndex.from_documents(documents)
 
     def query(self, index, query_text):
-        """
-    Queries the provided index with the specified query text
-    and returns the results.
-
-    Parameters:
-        index (VectorStoreIndex): The index to query against.
-        query_text (str): The text to query the index with.
-
-    Returns:
-        Any: The results of the query against the index.
-    """
+        """Queries the provided index with the specified query text and returns the results."""
         query_engine = index.as_query_engine()
         return query_engine.query(query_text)
