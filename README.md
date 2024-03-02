@@ -45,11 +45,12 @@ from pyvigate.ai.query_engine import QueryEngine
 
 query_engine = QueryEngine(
     api_key=os.getenv("OPENAI_API_KEY"),
-    api_version=os.getenv("AZURE_API_VERSION"),
+    azure_api_version=os.getenv("AZURE_API_VERSION"),
     azure_endpoint=os.getenv("AZURE_ENDPOINT"),
-    llm_deployment_name=os.getenv("LLM_DEPLOYMENT_NAME"),
-    embedding_deployment_name=os.getenv("EMBEDDING_DEPLOYMENT_NAME")
+    azure_llm_deployment_name=os.getenv("LLM_DEPLOYMENT_NAME"),
+    azure_embedding_deployment_name=os.getenv("EMBEDDING_DEPLOYMENT_NAME")
 )
+
 ```
 
 ### Login
