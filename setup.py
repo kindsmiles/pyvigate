@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='pyvigate',
-    version='0.0.2',
+    version='0.0.3',
     author='Abhijith Neil Abraham',
     author_email='abhijithneilabrahampk@gmail.com',
     description='A brief description of what your package does',
