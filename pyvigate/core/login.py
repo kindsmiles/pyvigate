@@ -124,7 +124,7 @@ class Login:
         """
         cache_filename = self.cache_filename
         directory_path = os.path.dirname(cache_filename)
-        index = self.query_engine.create_vector_store_index(directory_path)
+
         query_text = """Look at the given html and find the selectors
                                       corresponding the following fields.
                                       The selectors are required to pass
@@ -136,7 +136,7 @@ class Login:
                                     Respond only with a dict where the
                                     keys are the above three.
                                       """
-        response = self.query_engine.query(index, query_text)
+        response = self.query_engine.query(query_text)
         login_selectors = ast.literal_eval(str(response))
         return login_selectors
 
