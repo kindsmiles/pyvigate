@@ -51,17 +51,6 @@ class PlaywrightEngine:
         await self.page.goto(url)
         return self.page
 
-    async def get_page_content(self):
-        """
-        Retrieves the HTML content of the current page.
-
-        Returns:
-            str: The HTML content of the current page.
-        """
-        if not self.page:
-            raise Exception("Browser isn't started. Call start_browser first.")
-        return await self.page.content()
-
     async def click_selector(self, selector):
         """
         Clicks on an element on the page identified by the given selector.
@@ -117,3 +106,33 @@ class PlaywrightEngine:
             path (str, optional): The file path where the PDF will be saved. Defaults to "output.pdf".
         """
         await self.page.pdf(path=path)
+
+    async def execute_actions(self, action_sequence: list):
+        """
+        Executes a sequence of actions based on the action method strings.
+    
+        Args:
+            action_sequence (list): A list of dictionaries where each dictionary
+            represents an action and its corresponding arguments.
+        """
+        action_methods = {
+            'navigate_to': self.navigate_to,
+            'click_selector': self.click_selector,
+            'take_screenshot': self.take_screenshot,
+            'wait_for_selector': self.wait_for_selector,
+            'wait_for_navigation': self.wait_for_navigation,
+            'generate_pdf': self.generate_pdf,
+            'fill_form': self.fill_form
+            # Add other action mappings as needed.
+        }
+    
+        for action in action_sequence:
+            action_name = action.get("action")
+            args = action.get("args", [])
+            kwargs = action.get("kwargs", {})
+    
+            if action_name in action_methods:
+                method = action_methods[action_name]
+                await method(*args, **kwargs)
+            else:
+                print(f"No method found for action: {action_name}")
