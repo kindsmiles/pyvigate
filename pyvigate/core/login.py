@@ -108,6 +108,7 @@ class Login:
         """
         cache_filename = f"{self.cache_dir}/{self._get_filename_from_url(current_url)}_cached.html"
         self.cache_filename = cache_filename
+
         with open(cache_filename, "w") as file:
             file.write(str(soup))
         return cache_filename
@@ -126,16 +127,18 @@ class Login:
         query_text = """Look at the given html and find the selectors
                                       corresponding the following fields.
                                       The selectors are required to pass
-                                  to the page variable of playwright.
-                                  Respond only with a python dict in 
-                                  the following format:
+                                  to the page variable of playwright so respond in
+                                  the following format.
                                       {'Email Textarea': 'value',
                                       'Password Textarea': value',
                                       'Log In/ Sign In button': value'
                                       }
                                       """
-        response = self.llm_agent.query(query_text)
+        index = self.llm_agent.create_vector_store_index(
+            index_path=self.cache_dir)
+        response = self.llm_agent.query(index, query_text)
         login_selectors = ast.literal_eval(str(response))
+        print(login_selectors)
         return login_selectors
 
     def save_login_state(self, url, username, password, actual_url):

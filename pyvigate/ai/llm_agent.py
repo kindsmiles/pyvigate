@@ -42,12 +42,17 @@ class LlmAgent:
         self.api_version = azure_api_version
         self.azure_llm_deployment_name = azure_llm_deployment_name
         self.azure_embedding_deployment_name = azure_embedding_deployment_name
-        self.index = self.create_vector_store_index()
 
-    def create_vector_store_index(self):
+    def create_vector_store_index(self, index_path=None):
         """
         Initializes the specified LLM and embedding services based on config.
+        Args:
+            index_path (str): path to index. Defaults to None.
         """
+
+        if index_path is None:
+            index_path = self.directory_path
+
         if self.llm_type == 'azure':
             from llama_index.llms.azure_openai import AzureOpenAI
             self.llm = AzureOpenAI(
@@ -79,12 +84,12 @@ class LlmAgent:
         Settings.llm = self.llm
         Settings.embed_model = self.embed_model
 
-        documents = SimpleDirectoryReader(self.directory_path).load_data()
+        documents = SimpleDirectoryReader(index_path).load_data()
         return VectorStoreIndex.from_documents(documents)
 
-    def query(self, query_text):
+    def query(self, index, query_text):
         """
         Queries an index with text and returns the results.
         """
-        query_engine = self.index.as_query_engine()
+        query_engine = index.as_query_engine()
         return query_engine.query(query_text)
