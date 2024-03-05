@@ -35,7 +35,7 @@ class Scraping:
         content = await self.page.content()
         return content
 
-    async def extract_data_from_page(self):
+    async def extract_data_from_page(self, url):
         """
         Asynchronously extracts specific data from
         a web page using BeautifulSoup.
@@ -43,6 +43,7 @@ class Scraping:
         Returns:
             str: Extracted text from the web page.
         """
+        await self.page.goto(url)
         content = await self.page.content()
         soup = BeautifulSoup(content, 'html.parser')
 
@@ -50,7 +51,7 @@ class Scraping:
         page_text = soup.get_text(separator=' ', strip=True)
         return page_text
 
-    async def scrape_and_extract_links(self):
+    async def scrape_and_extract_links(self, url):
         """
         Asynchronously extracts all unique links
         from a web page that match the base URL's domain.
@@ -63,7 +64,7 @@ class Scraping:
             found on the page that match the base URL's domain.
         """
         page = self.page
-        base_url = page.url
+        base_url = url
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
         links = soup.find_all('a', href=True)
