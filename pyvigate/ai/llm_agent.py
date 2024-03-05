@@ -1,7 +1,7 @@
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
 
 
-class QueryEngine:
+class LlmAgent:
     """
     Manages interactions with different LLM and embedding services for
     querying and indexing, supporting dynamic service initialization.
