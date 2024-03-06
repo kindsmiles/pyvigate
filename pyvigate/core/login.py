@@ -86,7 +86,7 @@ class Login:
         login_selectors = await self.get_selectors_from_ai(cache_filename)
 
         # Perform login actions
-        await page.fill(login_selectors["Email Textarea"], username)
+        await page.fill(login_selectors["Email/Username Textarea"], username)
         await page.fill(login_selectors["Password Textarea"], password)
         await page.click(login_selectors["Log In/ Sign In button"])
         await page.wait_for_load_state("load")
@@ -129,7 +129,7 @@ class Login:
                                       The selectors are required to pass
                                   to the page variable of playwright so respond in
                                   the following format.
-                                      {'Email Textarea': 'value',
+                                      {'Email/Username Textarea': 'value',
                                       'Password Textarea': value',
                                       'Log In/ Sign In button': value'
                                       }
@@ -138,7 +138,6 @@ class Login:
             index_path=self.cache_dir)
         response = self.llm_agent.query(index, query_text)
         login_selectors = ast.literal_eval(str(response))
-        print(login_selectors)
         return login_selectors
 
     def save_login_state(self, url, username, password, actual_url):
