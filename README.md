@@ -72,8 +72,8 @@ With Scraping, Pyvigate offers powerful data extraction capabilities, enabling t
 ```
 from pyvigate.services.scraping import Scraping
 
-scraping = Scraping(data_dir="data")
-content = await scraping.extract_data_from_page(engine.page)
+scraping = Scraping(engine.page, data_dir="data")
+content = await scraping.extract_data_from_page(url)
 print("Scraped content:", content)
 ```
 
@@ -114,8 +114,8 @@ async def login_and_scrape():
     login = Login(query_engine)
     await login.perform_login(engine.page, "https://example.com/login", os.getenv("USERNAME"), os.getenv("PASSWORD"))
 
-    scraping = Scraping(data_dir="data")
-    content = await scraping.extract_data_from_page(engine.page)
+    scraping = Scraping(engine.page, data_dir="data")
+    content = await scraping.extract_data_from_page(url)
     print("Scraped content:", content)
 
     caching = Caching(cache_dir="html_cache")

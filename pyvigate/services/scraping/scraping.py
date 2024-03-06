@@ -12,61 +12,59 @@ class Scraping:
         data_dir (str): The directory where scraped data will be stored.
     """
 
-    def __init__(self, data_dir="data"):
+    def __init__(self, page, data_dir="data"):
         """
         Initializes the Scraping class with a specified data directory.
 
         Parameters:
+            page (Page): A playwright page object.
             data_dir (str): The directory to store scraped data.
             Defaults to "data".
         """
+        self.page = page
         self.data_dir = data_dir
         self._setup_directories()
 
-    async def scrape_page_content(self, page):
+    async def scrape_page_content(self):
         """
         Asynchronously scrapes the content of a web page.
-
-        Parameters:
-            page (Page): A playwright page object to scrape.
 
         Returns:
             str: The HTML content of the page.
         """
-        content = await page.content()
+        content = await self.page.content()
         return content
 
-    async def extract_data_from_page(self, page):
+    async def extract_data_from_page(self, url):
         """
         Asynchronously extracts specific data from
         a web page using BeautifulSoup.
 
-        Parameters:
-            page (Page): A playwright page object to extract data from.
-
         Returns:
             str: Extracted text from the web page.
         """
-        content = await page.content()
+        await self.page.goto(url)
+        content = await self.page.content()
         soup = BeautifulSoup(content, 'html.parser')
 
         # Example extraction: Getting all text
         page_text = soup.get_text(separator=' ', strip=True)
         return page_text
 
-    async def scrape_and_extract_links(self, page, base_url):
+    async def scrape_and_extract_links(self, url):
         """
         Asynchronously extracts all unique links
         from a web page that match the base URL's domain.
 
         Parameters:
-            page (Page): A playwright page object to extract links from.
             base_url (str): The base URL to match links against.
 
         Returns:
             set: A set of unique URLs
             found on the page that match the base URL's domain.
         """
+        page = self.page
+        base_url = url
         content = await page.content()
         soup = BeautifulSoup(content, 'html.parser')
         links = soup.find_all('a', href=True)

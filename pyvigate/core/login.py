@@ -13,16 +13,16 @@ class Login:
     Automates web application login using AI-powered selector detection.
 
     Attributes:
-        query_engine: An instance of QueryEngine used for selector detection.
+        llm_agent: An instance of QueryEngine used for selector detection.
         credentials_file (str): Path to a JSON file storing login credentials.
         cache_dir (str): Directory path for caching webpage contents.
     """
 
-    def __init__(self, query_engine=None,
+    def __init__(self, llm_agent=None,
                  credentials_file="demo_credentials.json",
                  cache_dir="html_cache"):
 
-        self.query_engine = query_engine
+        self.llm_agent = llm_agent
         self.credentials_file = credentials_file
         self.cache_dir = cache_dir
         self._setup_directories()
@@ -86,7 +86,7 @@ class Login:
         login_selectors = await self.get_selectors_from_ai(cache_filename)
 
         # Perform login actions
-        await page.fill(login_selectors["Email Textarea"], username)
+        await page.fill(login_selectors["Email/Username Textarea"], username)
         await page.fill(login_selectors["Password Textarea"], password)
         await page.click(login_selectors["Log In/ Sign In button"])
         await page.wait_for_load_state("load")
@@ -108,6 +108,7 @@ class Login:
         """
         cache_filename = f"{self.cache_dir}/{self._get_filename_from_url(current_url)}_cached.html"
         self.cache_filename = cache_filename
+
         with open(cache_filename, "w") as file:
             file.write(str(soup))
         return cache_filename
@@ -122,21 +123,20 @@ class Login:
         Returns:
             dict: A dictionary of detected login selectors.
         """
-        cache_filename = self.cache_filename
-        directory_path = os.path.dirname(cache_filename)
 
         query_text = """Look at the given html and find the selectors
                                       corresponding the following fields.
                                       The selectors are required to pass
-                                  to the page variable of playwright so
-                                  respond in that format.
-                                      1) Email Textarea
-                                      2) Password Textarea
-                                      3) Log In/ Sign In button
-                                    Respond only with a dict where the
-                                    keys are the above three.
+                                  to the page variable of playwright so respond in
+                                  the following format.
+                                      {'Email/Username Textarea': 'value',
+                                      'Password Textarea': value',
+                                      'Log In/ Sign In button': value'
+                                      }
                                       """
-        response = self.query_engine.query(query_text)
+        index = self.llm_agent.create_vector_store_index(
+            index_path=self.cache_dir)
+        response = self.llm_agent.query(index, query_text)
         login_selectors = ast.literal_eval(str(response))
         return login_selectors
 
